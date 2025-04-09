@@ -2,7 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TestEntity } from '../test/test.entity';
-
+import { ItemsModule } from './modules/items.module';
+import { UsersModule } from './modules/users.module';
+import { AdminModule } from './modules/admin.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -16,9 +18,14 @@ import { TestEntity } from '../test/test.entity';
       autoLoadEntities: true,
       entities: [TestEntity],
       synchronize: true, // only in dev! don't use in prod
-      logging: true,
-      
+      logging: true,      
     }),
+    ItemsModule,
+    UsersModule,
+    AdminModule
   ],
+  controllers: [],
+  providers: [],
+
 })
 export class AppModule {}
