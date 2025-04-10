@@ -5,6 +5,17 @@ import { TestEntity } from '../test/test.entity';
 import { ItemsModule } from './modules/items.module';
 import { UsersModule } from './modules/users.module';
 import { AdminModule } from './modules/admin.module';
+
+
+// @Module({
+//   imports: [
+//     MongooseModule.forRoot('mongodb://localhost/neighborhood-sharing'),
+//     ItemsModule,
+//     UsersModule,
+//     AdminModule,
+//   ],
+// })
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -17,7 +28,7 @@ import { AdminModule } from './modules/admin.module';
       database: process.env.POSTGRES_DB,
       autoLoadEntities: true,
       entities: [TestEntity],
-      synchronize: true, // only in dev! don't use in prod
+      synchronize: true, 
       logging: true,      
     }),
     ItemsModule,
