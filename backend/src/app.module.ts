@@ -6,6 +6,8 @@ import { ItemsModule } from './modules/items.module';
 import { UsersModule } from './modules/users.module';
 import { AdminModule } from './modules/admin.module';
 import { AuthModule } from './modules/auth.module';
+import { BorrowRequestModule } from './modules/borrow-request.module';
+
 
 
 
@@ -20,7 +22,6 @@ import { AuthModule } from './modules/auth.module';
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
       autoLoadEntities: true,
-      entities: [TestEntity],
       synchronize: true, 
       logging: true,      
     }),
@@ -28,6 +29,8 @@ import { AuthModule } from './modules/auth.module';
     UsersModule,
     AdminModule,
     AuthModule,
+    BorrowRequestModule
+
   ],
   controllers: [],    //These stay empty since we are directly importing the Modules and those modules register their own controllers and services(providers)
   providers: [],

@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards } from '@nes
 import { ItemsService } from '../services/items.services';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
 @Controller('items')
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
