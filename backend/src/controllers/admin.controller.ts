@@ -1,28 +1,47 @@
-import { Controller, Get, Post, Body, Delete, Param } from '@nestjs/common';
-import { AdminService } from '../services/admin.services';
-import { Roles } from 'src/common/decorators/roles.decorator';
 import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from 'src/common/guards/auth.guard';
-import { RolesGuard } from 'src/common/guards/roles.guard';
+import {Role} from '../common/decorators/roles.decorator';
+import { Controller, Get, Patch, Delete, Param } from '@nestjs/common';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { AdminService } from '../services/admin.services';
 
-@UseGuards(AuthGuard,RolesGuard)
+@UseGuards(RolesGuard)
+@Role('admin')
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
-  @Get('reports')
-  getReports() {
-    return this.adminService.getReports();
+  @Get('users')
+  getAllUsers() {
+    return this.adminService.findAllUsers();
   }
 
-  @Post('action')
-  takeAction(@Body() actionBody: any) {
-    return this.adminService.takeAction(actionBody);
+  @Get('items')
+  getAllItems() {
+    return this.adminService.findAllItems();
+  }
+
+  @Get('requests')
+  getAllRequests() {
+    return this.adminService.findAllBorrowRequests();
+  }
+
+  @Patch('items/:id/approve')
+  approveItem(@Param('id') id: string) {
+    return this.adminService.approveItem(+id);
+  }
+
+  @Patch('items/:id/reject')
+  rejectItem(@Param('id') id: string) {
+    return this.adminService.rejectItem(+id);
   }
 
   @Delete('users/:id')
-  @Roles('admin') 
-  removeUser(@Param('id') id: string) {
-    return `User with ID ${id} removed!`;
+  deleteUser(@Param('id') id: string) {
+    return this.adminService.deleteUser(+id);
+  }
+
+  @Delete('items/:id')
+  deleteItem(@Param('id') id: string) {
+    return this.adminService.deleteItem(+id);
   }
 }

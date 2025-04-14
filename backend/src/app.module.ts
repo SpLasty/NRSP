@@ -5,16 +5,9 @@ import { TestEntity } from '../test/test.entity';
 import { ItemsModule } from './modules/items.module';
 import { UsersModule } from './modules/users.module';
 import { AdminModule } from './modules/admin.module';
+import { AuthModule } from './modules/auth.module';
 
 
-// @Module({
-//   imports: [
-//     MongooseModule.forRoot('mongodb://localhost/neighborhood-sharing'),
-//     ItemsModule,
-//     UsersModule,
-//     AdminModule,
-//   ],
-// })
 
 @Module({
   imports: [
@@ -33,9 +26,10 @@ import { AdminModule } from './modules/admin.module';
     }),
     ItemsModule,
     UsersModule,
-    AdminModule
+    AdminModule,
+    AuthModule,
   ],
-  controllers: [],
+  controllers: [],    //These stay empty since we are directly importing the Modules and those modules register their own controllers and services(providers)
   providers: [],
 
 })

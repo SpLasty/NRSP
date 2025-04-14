@@ -1,34 +1,33 @@
-import { Request, Response } from 'express';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {AuthService} from '../services/auth.services';
+import { RegisterDto } from '../dto/auth/register.dto';
+import { LoginDto } from '../dto/auth/login.dto';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { CurrentUser } from '../common/decorators/user.decorator';
 
+@Controller('auth')
 export class AuthController {
-    // Handle user login
-    async login(req: Request, res: Response): Promise<void> {
-        try {
-            // Implement login logic here
-            res.status(200).json({ message: 'Login successful' });
-        } catch (error) {
-            res.status(500).json({ error: 'An error occurred during login' });
-        }
-    }
+  constructor(private authService: AuthService) {}
 
-    // Handle user registration
-    async register(req: Request, res: Response): Promise<void> {
-        try {
-            // Implement registration logic here
-            res.status(201).json({ message: 'Registration successful' });
-        } catch (error) {
-            res.status(500).json({ error: 'An error occurred during registration' });
-        }
-    }
+  @Post('register')
+  register(@Body() dto: RegisterDto) {
+    return this.authService.register(dto);
+  }
 
-    // Handle user logout
-    async logout(req: Request, res: Response): Promise<void> {
-        try {
-            // Implement logout logic here
-            res.status(200).json({ message: 'Logout successful' });
-        } catch (error) {
-            res.status(500).json({ error: 'An error occurred during logout' });
-        }
-    }
+  @Post('login')
+  async login(@Body() dto: LoginDto) {
+    const user = await this.authService.validateUser(dto.email, dto.password);
+    return this.authService.login(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@CurrentUser() user: any) {
+    return user;
+  }
+
+  @Post('logout')
+  logout() {
+    return { message: 'Client should delete the token' };
+  }
 }
-

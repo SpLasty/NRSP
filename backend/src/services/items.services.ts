@@ -1,40 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { CreateItemDto } from '../dto/items/create-item.dto';
-import { UpdateItemDto } from '../dto/items/update-item.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Item } from '../db/entity/item.entity';
+import { User } from '../db/entity/user.entity';
 
 @Injectable()
 export class ItemsService {
-  private items: any[] = []; // Temporary in-memory storage
+  constructor(
+    @InjectRepository(Item)
+    private itemRepo: Repository<Item>,
+  ) {}
 
-  createItem(createItemDto: CreateItemDto) {
-    const newItem = { id: Date.now(), ...createItemDto };
-    this.items.push(newItem);
-    return newItem;
+  async findAll(): Promise<Item[]> {
+    return this.itemRepo.find({
+      relations: ['lender'], // Include the lender relation to get the user who created the item
+    });
+  }
+  
+
+  findById(id: number) {
+    return this.itemRepo.findOne({ where: { id }, relations: ['lender'] });
   }
 
-  findAllItems() {
-    return this.items;
+  create(data: Partial<Item>) {
+    const item = this.itemRepo.create(data);
+    return this.itemRepo.save(item);
   }
 
-  findOneItem(id: string) {
-    return this.items.find((item) => item.id === Number(id));
+  update(id: number, data: Partial<Item>) {
+    return this.itemRepo.update(id, data);
   }
 
-  updateItem(id: string, updateItemDto: UpdateItemDto) {
-    const index = this.items.findIndex((item) => item.id === Number(id));
-    if (index > -1) {
-      this.items[index] = { ...this.items[index], ...updateItemDto };
-      return this.items[index];
-    }
-    return null;
-  }
-
-  removeItem(id: string) {
-    const index = this.items.findIndex((item) => item.id === Number(id));
-    if (index > -1) {
-      const removed = this.items.splice(index, 1);
-      return removed[0];
-    }
-    return null;
+  remove(id: number) {
+    return this.itemRepo.delete(id);
   }
 }
