@@ -1,19 +1,20 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TestEntity } from '../test/test.entity';
 import { ItemsModule } from './modules/items.module';
 import { UsersModule } from './modules/users.module';
 import { AdminModule } from './modules/admin.module';
 import { AuthModule } from './modules/auth.module';
 import { BorrowRequestModule } from './modules/borrow-request.module';
-
-
+import { join } from 'path';
 
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ 
+      isGlobal: true,
+      envFilePath: '.env'
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
