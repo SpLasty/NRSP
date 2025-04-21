@@ -11,10 +11,11 @@ dotenv.config({ path: join(__dirname, '..', '.env') });
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalGuards(new JwtAuthGuard()); // ✅ Secure all routes by default
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true })); // ✅ DTO validation
-  app.enableCors({ origin: 'http://localhost:3000', credentials: true }); // ✅ Frontend access
-
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true })); 
+  app.enableCors({
+    origin: ['http://localhost:3000', 'http://localhost:5173'],
+    credentials: true,
+  });
   await app.listen(3000);
   console.log({
     POSTGRES_HOST: process.env.POSTGRES_HOST,
