@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { Item } from '../db/entity/item.entity';
 import { User } from '../db/entity/user.entity';
 
@@ -12,15 +12,14 @@ export class ItemsService {
   ) {}
 
   async findAll(): Promise<Item[]> {
-    return this.itemRepo.find({
-      relations: ['lender'], // Include the lender relation to get the user who created the item
-    });
+    return this.itemRepo.find(); // ✅ no relations
   }
   
 
   findById(id: number) {
-    return this.itemRepo.findOne({ where: { id }, relations: ['lender'] });
+    return this.itemRepo.findOne({ where: { id } });
   }
+  
 
   create(data: Partial<Item>) {
     const item = this.itemRepo.create(data);
@@ -34,4 +33,5 @@ export class ItemsService {
   remove(id: number) {
     return this.itemRepo.delete(id);
   }
+  
 }

@@ -1,28 +1,44 @@
-import React, { useState } from 'react';
-import { Box, Autocomplete, TextField } from '@mui/material';
-import {
-  GoogleMap,
-  Marker,
-  useJsApiLoader,
-} from '@react-google-maps/api';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, TextField, Autocomplete, Divider } from '@mui/material';
 
-const containerStyle = { width: '100%', height: '400px' };
-const defaultCenter = { lat: 51.0447, lng: -114.0719 };
+interface Item {
+  id: number;
+  title: string;
+  description: string;
+  condition: string;
+  category: string;
+  status: string;
+  imageUrl: string | null;
+  location: { lat: number; lng: number } | null;
+}
 
 const SearchItemsPage: React.FC = () => {
   const [query, setQuery] = useState<string>('');
+  const [items, setItems] = useState<Item[]>([]);
 
-  const itemNames: string[] = [];
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_KEY!,
-  });
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const res = await fetch('http://localhost:3000/items');
+        const data = await res.json();
+        setItems(data);
+      } catch (err) {
+        console.error('Failed to fetch items:', err);
+      }
+    };
 
-  if (loadError) {
-    return <Box>Map failed to load</Box>;
-  }
+    fetchItems();
+  }, []);
+
+  const itemNames = items.map((item) => item.title);
+  const filteredItems = query
+    ? items.filter((item) =>
+        item.title.toLowerCase().includes(query.toLowerCase())
+      )
+    : items;
 
   return (
-    <Box>
+    <Box sx={{ px: 2, py: 3 }}>
       <Autocomplete
         freeSolo
         options={itemNames}
@@ -30,32 +46,40 @@ const SearchItemsPage: React.FC = () => {
         renderInput={(params) => (
           <TextField
             {...params}
-            size="small"
             label="Search items"
             variant="outlined"
             fullWidth
-            sx={{
-              my: 2,
-              backgroundColor: '#e0e0e0',
-              borderRadius: 1,
-              '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
-            }}
+            sx={{ mb: 3 }}
           />
         )}
       />
 
-      <Box sx={containerStyle}>
-        {isLoaded ? (
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={defaultCenter}
-            zoom={12}
-          >
-            {/* Example marker at center */}
-            <Marker position={defaultCenter} />
-          </GoogleMap>
-        ) : null}
-      </Box>
+      {filteredItems.map((item) => (
+        <Box key={item.id} sx={{ mb: 4 }}>
+          {item.imageUrl && (
+            <img
+              src={item.imageUrl}
+              alt={item.title}
+              style={{ width: '100%', maxWidth: 300, height: 200, objectFit: 'cover', borderRadius: 8 }}
+            />
+          )}
+          <Box sx={{ mt: 1 }}>
+            <Typography variant="h6">{item.title}</Typography>
+            <Typography variant="body2" color="text.secondary">
+              {item.description}
+            </Typography>
+            <Typography variant="caption" display="block">
+              Condition: {item.condition} | Category: {item.category} | Status: {item.status}
+            </Typography>
+            {item.location && (
+              <Typography variant="caption" color="text.secondary">
+                Location: {item.location.lat.toFixed(4)}, {item.location.lng.toFixed(4)}
+              </Typography>
+            )}
+          </Box>
+          <Divider sx={{ my: 2 }} />
+        </Box>
+      ))}
     </Box>
   );
 };
