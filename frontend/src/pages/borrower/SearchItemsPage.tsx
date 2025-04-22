@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, TextField, Autocomplete, Divider } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 interface Item {
   id: number;
@@ -55,30 +56,38 @@ const SearchItemsPage: React.FC = () => {
       />
 
       {filteredItems.map((item) => (
-        <Box key={item.id} sx={{ mb: 4 }}>
-          {item.imageUrl && (
-            <img
-              src={item.imageUrl}
-              alt={item.title}
-              style={{ width: '100%', maxWidth: 300, height: 200, objectFit: 'cover', borderRadius: 8 }}
-            />
-          )}
-          <Box sx={{ mt: 1 }}>
-            <Typography variant="h6">{item.title}</Typography>
-            <Typography variant="body2" color="text.secondary">
-              {item.description}
-            </Typography>
-            <Typography variant="caption" display="block">
-              Condition: {item.condition} | Category: {item.category} | Status: {item.status}
-            </Typography>
-            {item.location && (
-              <Typography variant="caption" color="text.secondary">
-                Location: {item.location.lat.toFixed(4)}, {item.location.lng.toFixed(4)}
-              </Typography>
+        <Link
+        to={`/borrower/item/${item.id}`}
+          key={item.id}
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
+          <Box sx={{ mb: 4, cursor: 'pointer' }}>
+            {item.imageUrl && (
+              <img
+                src={item.imageUrl}
+                alt={item.title}
+                style={{
+                  width: '100%',
+                  maxWidth: 300,
+                  height: 200,
+                  objectFit: 'cover',
+                  borderRadius: 8,
+                }}
+              />
             )}
+            <Box sx={{ mt: 1 }}>
+              <Typography variant="h6">{item.title}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {item.description}
+              </Typography>
+              <Typography variant="caption" display="block">
+                 Category: {item.category} 
+              </Typography>
+              
+            </Box>
+            <Divider sx={{ my: 2 }} />
           </Box>
-          <Divider sx={{ my: 2 }} />
-        </Box>
+        </Link>
       ))}
     </Box>
   );

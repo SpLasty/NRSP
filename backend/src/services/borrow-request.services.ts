@@ -1,19 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BorrowRequest } from '../db/entity/borrow-request.entity';
 import { Item } from '../db/entity/item.entity';
 import { User } from '../db/entity/user.entity';
+import { CreateBorrowRequestDto } from '../dto/users/create-borrow-request.dto';
 
 @Injectable()
 export class BorrowRequestService {
   constructor(
     @InjectRepository(BorrowRequest)
     private borrowRepo: Repository<BorrowRequest>,
+
+    @InjectRepository(Item)
+    private itemRepo: Repository<Item>,
+
+    @InjectRepository(User)
+    private userRepo: Repository<User>,
   ) {}
 
-  async create(data: Partial<BorrowRequest>): Promise<BorrowRequest> {
-    const request = this.borrowRepo.create(data);
+  async create(data: CreateBorrowRequestDto): Promise<BorrowRequest> {
+    // Ensure referenced IDs exist
+    const itemExists = await this.itemRepo.exist({ where: { id: data.itemId } });
+    const borrowerExists = await this.userRepo.exist({ where: { id: data.borrowerId } });
+
+    if (!itemExists || !borrowerExists) {
+      throw new NotFoundException('Item or borrower not found');
+    }
+    const request = this.borrowRepo.create({
+      item: { id: data.itemId } as Item,
+      borrower: { id: data.borrowerId } as User,
+      returnDueDate: data.returnDueDate,
+      requestDate: new Date(),
+      status: 'pending',
+    });
+
     return this.borrowRepo.save(request);
   }
 
@@ -22,12 +43,26 @@ export class BorrowRequestService {
   }
 
   async findById(id: number): Promise<BorrowRequest | null> {
-    return this.borrowRepo.findOne({ where: { id }, relations: ['item', 'borrower'] });
+    return this.borrowRepo.findOne({
+      where: { id },
+      relations: ['item', 'borrower'],
+    });
   }
 
+  // async findByBorrower(borrowerId: number): Promise<BorrowRequest[]> {
+  //   return this.borrowRepo.find({
+  //     where: { borrower: { id: borrowerId } },
+  //     relations: ['item', 'borrower'],
+  //   });
+  // }
   async findByBorrower(borrowerId: number): Promise<BorrowRequest[]> {
-    return this.borrowRepo.find({ where: { borrower: { id: borrowerId } }, relations: ['item', 'borrower'] });
+    return this.borrowRepo.find({
+      where: { borrower: { id: borrowerId } },
+      relations: ['item'],
+      order: { requestDate: 'DESC' }
+    });
   }
+  
 
   async updateStatus(id: number, status: string): Promise<BorrowRequest | null> {
     const request = await this.findById(id);
