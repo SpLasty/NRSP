@@ -12,3 +12,16 @@ export function getUserIdFromToken(): number | null {
     return null;
   }
 }
+
+export function getUserRoleFromToken(): 'borrower' | 'lender' | 'admin' | null {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+  
+    try {
+      const decoded: any = jwtDecode(token);
+      return decoded.role || null;
+    } catch (err) {
+      console.error('Invalid token:', err);
+      return null;
+    }
+  }

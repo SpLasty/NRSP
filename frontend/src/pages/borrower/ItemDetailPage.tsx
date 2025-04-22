@@ -5,7 +5,24 @@ import {
   DialogContent, DialogActions, TextField
 } from '@mui/material';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
-import { getUserIdFromToken } from '../../utils/auth';
+import { getUserIdFromToken, getUserRoleFromToken } from '../../utils/auth';
+
+
+
+const role = getUserRoleFromToken(); // ✅ get user role
+
+var isBorrower: boolean | null = null;
+
+
+if (role === 'borrower') {
+  isBorrower = true;
+} else if (role === 'lender') {
+  isBorrower = false;
+}
+console.log(getUserRoleFromToken())
+console.log(isBorrower)
+
+
 interface Item {
   id: number;
   title: string;
@@ -56,10 +73,6 @@ const ItemDetailPage: React.FC = () => {
       return;
     }
 
-    console.log("Submitting borrow request with:");
-    console.log("Item ID:", item.id);
-    console.log("Borrower ID:", borrowerId);
-    console.log("Return Due Date:", returnDueDate);
 
     try {
       const res = await fetch('http://localhost:3000/borrow', {
@@ -107,46 +120,39 @@ const ItemDetailPage: React.FC = () => {
           </Typography>
         )}
       </Box>
+      {isBorrower && (
+  <>
+    <Button variant="contained" sx={{ mt: 4 }} onClick={() => setOpen(true)}>
+      Request to Borrow
+    </Button>
 
-      {isLoaded && item.location && (
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={item.location}
-          zoom={14}
+    <Dialog open={open} onClose={() => setOpen(false)}>
+      <DialogTitle>Request to Borrow</DialogTitle>
+      <DialogContent>
+        <TextField
+          label="Return Due Date"
+          type="date"
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          value={returnDueDate}
+          onChange={(e) => setReturnDueDate(e.target.value)}
+          sx={{ mt: 1 }}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setOpen(false)}>Cancel</Button>
+        <Button
+          variant="contained"
+          onClick={handleSubmit}
+          disabled={!returnDueDate || !item}
         >
-          <Marker position={item.location} />
-        </GoogleMap>
-      )}
+          Confirm
+        </Button>
+      </DialogActions>
+    </Dialog>
+  </>
+)}
 
-      <Button variant="contained" sx={{ mt: 4 }} onClick={() => setOpen(true)}>
-        Request to Borrow
-      </Button>
-
-      {/* Borrow Request Dialog */}
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Request to Borrow</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="Return Due Date"
-            type="date"
-            fullWidth
-            InputLabelProps={{ shrink: true }}
-            value={returnDueDate}
-            onChange={(e) => setReturnDueDate(e.target.value)}
-            sx={{ mt: 1 }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button
-            variant="contained"
-            onClick={handleSubmit}
-            disabled={!returnDueDate || !item}
-          >
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 };

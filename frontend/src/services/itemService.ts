@@ -58,6 +58,27 @@ export const uploadImage = (file: File): Promise<{ url: string }> => {
     return { url };
   });
 };
+export async function fetchItemById(id: number): Promise<Item> {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/items/${id}`);
+  if (!res.ok) throw new Error('Failed to fetch item');
+  return res.json();
+}
+
+export async function updateItem(id: number, payload: ItemPayload): Promise<Item> {
+  const token = localStorage.getItem('token');
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/items/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error('Failed to update item');
+  return res.json();
+}
+
+
 
 export const deleteItem = (id: number): Promise<void> =>
     api.delete(`/items/${id}`).then(() => undefined);

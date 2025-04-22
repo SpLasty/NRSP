@@ -22,6 +22,22 @@ const initialState: AuthState = {
 }
 
 // login thunk
+// export const loginUser = createAsyncThunk<
+//   UserProfile,
+//   { email: string; password: string },
+//   { rejectValue: string }
+// >(
+//   'auth/loginUser',
+//   async ({ email, password }, { rejectWithValue }) => {
+//     try {
+//       await loginApi(email, password)
+//       const user = await getProfile()
+//       return user
+//     } catch (err: any) {
+//       return rejectWithValue(err.response?.data?.message || err.message)
+//     }
+//   }
+// )
 export const loginUser = createAsyncThunk<
   UserProfile,
   { email: string; password: string },
@@ -30,14 +46,13 @@ export const loginUser = createAsyncThunk<
   'auth/loginUser',
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      await loginApi(email, password)
-      const user = await getProfile()
-      return user
+      const { user } = await loginApi(email, password);
+      return user;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || err.message)
+      return rejectWithValue(err.response?.data?.message || err.message);
     }
   }
-)
+);
 
 // register thunk
 export const registerUser = createAsyncThunk<

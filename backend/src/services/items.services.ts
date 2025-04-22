@@ -34,7 +34,14 @@ export class ItemsService {
   remove(id: number) {
     return this.itemRepo.delete(id);
   }
+  async fetchItemById(id: number): Promise<Item> {
+    return this.itemRepo.findOne({ where: { id }, relations: ['lender'] });
+  }
 
+  async updateItem(id: number, data: Partial<Item>): Promise<Item> {
+    await this.itemRepo.update(id, data);
+    return this.findById(id);
+  }
   async findByLender(lenderId: number) {
     return this.itemRepo.find({
       where: { lender: { id: lenderId } },

@@ -81,7 +81,7 @@ const SearchItemsPage: React.FC = () => {
                 {item.description}
               </Typography>
               <Typography variant="caption" display="block">
-                 Category: {item.category} 
+                 Category: {item.category} | Status: {item.status}
               </Typography>
               
             </Box>
