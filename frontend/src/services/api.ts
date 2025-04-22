@@ -5,6 +5,10 @@ const api = axios.create({
   withCredentials: true,
 })
 
+
+export const createItem = (data: any) =>
+  api.post('/items', data).then(r => r.data);
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   if (config.headers && token) {

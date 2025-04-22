@@ -3,6 +3,7 @@ import { Drawer, List, ListItemButton, ListItemIcon, ListItemText, Toolbar } fro
 import { Link, useLocation } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import ListIcon from '@mui/icons-material/List';
+import AddIcon from '@mui/icons-material/Add'
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SearchIcon from '@mui/icons-material/Search';
@@ -21,10 +22,11 @@ const navByRole: Record<Role, Array<{ label: string; path: string; icon: React.R
   ],
   lender: [
     { label: 'Home', path: '/lender', icon: <HomeIcon /> },
-    { label: 'List Items', path: '/lender/list', icon: <ListIcon /> },
+    { label: 'My Listings', path: '/lender/my-items', icon: <ListIcon /> },
+    { label: 'List New Item', path: '/lender/list', icon: <AddIcon /> },
     { label: 'Notifications', path: '/notifications', icon: <NotificationsIcon /> },
     { label: 'Profile', path: '/profile', icon: <AccountCircleIcon /> },
-  ],
+  ],  
   admin: [
     { label: 'Dashboard', path: '/admin', icon: <DashboardIcon /> },
     { label: 'Users', path: '/admin/users', icon: <ListIcon /> },

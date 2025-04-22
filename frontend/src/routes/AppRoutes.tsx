@@ -10,6 +10,7 @@ import ItemDetailPage from '../pages/borrower/ItemDetailPage';
 import LenderHome from '../pages/lender/LenderHome'
 import ListItemsPage from '../pages/lender/ListItemsPage';
 import NotFoundPage from '../pages/NotFoundPage';
+import ListingsPage from '../pages/lender/ListingsPage'
 
 const AppRoutes: React.FC = () => (
   <Routes>
@@ -25,7 +26,9 @@ const AppRoutes: React.FC = () => (
         <Route path="borrower/item/:id" element={<ItemDetailPage />} />
         {/* Lender */}
         <Route path="lender" element={<LenderHome />} />
-        <Route path="lender/list" element={<ListItemsPage />} />
+       <Route path="lender/list" element={<ListItemsPage />} />     
+       <Route path="lender/my-items" element={<ListingsPage />} /> 
+       <Route path="items/:id" element={<ItemDetailPage />} />
         {/* fallback */}
         <Route path="*" element={<NotFoundPage />} />
       </Route>
