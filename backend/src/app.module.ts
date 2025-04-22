@@ -6,8 +6,9 @@ import { UsersModule } from './modules/users.module';
 import { AdminModule } from './modules/admin.module';
 import { AuthModule } from './modules/auth.module';
 import { BorrowRequestModule } from './modules/borrow-request.module';
-import { join } from 'path';
-
+import { LenderController } from './controllers/lender.controller';
+import { LenderService } from './services/lender.services';
+import { LenderModule } from './modules/lender.module';
 
 @Module({
   imports: [
@@ -23,18 +24,15 @@ import { join } from 'path';
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
       autoLoadEntities: true,
-      synchronize: true, 
-      logging: true,      
+      synchronize: true,
+      logging: true,
     }),
     ItemsModule,
     UsersModule,
     AdminModule,
     AuthModule,
-    BorrowRequestModule
-
-  ],
-  controllers: [],    //These stay empty since we are directly importing the Modules and those modules register their own controllers and services(providers)
-  providers: [],
-
+    BorrowRequestModule,
+    LenderModule
+  ]
 })
 export class AppModule {}

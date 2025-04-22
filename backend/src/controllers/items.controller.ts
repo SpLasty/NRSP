@@ -40,7 +40,8 @@ export class ItemsController {
     @Body() dto: CreateItemDto,
     @CurrentUser() user: { sub: number },
   ) {
-    const lender = await this.usersService.findById(user.sub);
+    console.log('🔍 Lender ID (user.sub):', user.sub);
+    const lender = await this.usersService.findById(8);
     return this.items.create({ ...dto, lender });
   }
 
