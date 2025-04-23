@@ -8,14 +8,9 @@ import { getUserIdFromToken, getUserRoleFromToken } from '../../utils/auth';
 import { useSelector } from 'react-redux';
 import { selectAuth } from '../../features/auth/authSlice';
 
-<<<<<<< Updated upstream
 
 
 
-=======
-const role = getUserRoleFromToken();
-const isBorrower = role === 'borrower';
->>>>>>> Stashed changes
 
 interface Item {
   id: number;
