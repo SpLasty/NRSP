@@ -26,7 +26,7 @@ const AppRoutes: React.FC = () => (
         <Route path="borrower/search" element={<SearchItemsPage />} />
         <Route path="borrower/item/:id" element={<ItemDetailPage />} />
         {/* Lender */}
-        <Route path="lender" element={<LenderHome />} />
+        {/* <Route path="lender" element={<LenderHome />} /> */}
        <Route path="lender/list" element={<ListItemsPage />} />     
        <Route path="lender/my-items" element={<ListingsPage />} /> 
        <Route path="items/:id" element={<ItemDetailPage />} />

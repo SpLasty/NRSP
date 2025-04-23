@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Box, Typography, Button, Dialog, DialogTitle,
   DialogContent, DialogActions, TextField
 } from '@mui/material';
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { getUserIdFromToken, getUserRoleFromToken } from '../../utils/auth';
 import { useSelector } from 'react-redux';
 import { selectAuth } from '../../features/auth/authSlice';
 
+<<<<<<< Updated upstream
 
 
 
+=======
+const role = getUserRoleFromToken();
+const isBorrower = role === 'borrower';
+>>>>>>> Stashed changes
 
 interface Item {
   id: number;
@@ -24,13 +28,6 @@ interface Item {
   location: { lat: number; lng: number } | null;
 }
 
-const containerStyle = {
-  width: '100%',
-  height: '300px',
-  borderRadius: '8px',
-  marginTop: '16px'
-};
-
 const ItemDetailPage: React.FC = () => {
   const { user } = useSelector(selectAuth);   // ← reactive
   const isBorrower = user?.role === 'borrower';
@@ -42,12 +39,10 @@ const ItemDetailPage: React.FC = () => {
   const [item, setItem] = useState<Item | null>(null);
   const [open, setOpen] = useState(false);
   const [returnDueDate, setReturnDueDate] = useState('');
+  const borrowerId = getUserIdFromToken();
+  const mapRef = useRef<HTMLDivElement>(null);
 
-  const borrowerId = getUserIdFromToken(); // ✅ your current logged-in user ID
-
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
-  });
+  const MAP_ID = '2e3d7acc77ffe0b5'; // 🔥 Replace this with your actual Google Cloud Map ID
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -63,12 +58,44 @@ const ItemDetailPage: React.FC = () => {
     fetchItem();
   }, [id]);
 
+  useEffect(() => {
+    const initMap = async () => {
+      if (!item?.location || !mapRef.current) return;
+
+      const { Loader } = await import('@googlemaps/js-api-loader');
+      const loader = new Loader({
+        apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
+        version: 'weekly',
+        libraries: ['marker'],
+      });
+
+      const { Map } = await loader.importLibrary('maps');
+      const { AdvancedMarkerElement } = await loader.importLibrary('marker');
+
+      const map = new Map(mapRef.current, {
+        center: item.location,
+        zoom: 17,
+        mapId: MAP_ID, // ✅ Use mapId here
+        tilt: 45,
+        heading: 90,
+        mapTypeId: 'roadmap',
+      });
+
+      new AdvancedMarkerElement({
+        map,
+        position: item.location,
+        title: item.title,
+      });
+    };
+
+    initMap();
+  }, [item]);
+
   const handleSubmit = async () => {
     if (!item || !item.id || !borrowerId || !returnDueDate) {
       alert('Missing required fields.');
       return;
     }
-
 
     try {
       const res = await fetch('http://localhost:3000/borrow', {
@@ -82,7 +109,6 @@ const ItemDetailPage: React.FC = () => {
       });
 
       if (!res.ok) throw new Error('Failed to create request');
-
       setOpen(false);
       alert('Borrow request submitted!');
     } catch (err) {
@@ -116,39 +142,48 @@ const ItemDetailPage: React.FC = () => {
           </Typography>
         )}
       </Box>
+
+      {/* Google Map */}
+      {item.location && (
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h6" sx={{ mb: 1 }}>Map Location</Typography>
+          <div ref={mapRef} style={{ width: '100%', height: 300, borderRadius: 8 }} />
+        </Box>
+      )}
+
+      {/* Borrow Button and Dialog */}
       {isBorrower && (
-  <>
-    <Button variant="contained" sx={{ mt: 4 }} onClick={() => setOpen(true)}>
-      Request to Borrow
-    </Button>
+        <>
+          <Button variant="contained" sx={{ mt: 4 }} onClick={() => setOpen(true)}>
+            Request to Borrow
+          </Button>
 
-    <Dialog open={open} onClose={() => setOpen(false)}>
-      <DialogTitle>Request to Borrow</DialogTitle>
-      <DialogContent>
-        <TextField
-          label="Return Due Date"
-          type="date"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          value={returnDueDate}
-          onChange={(e) => setReturnDueDate(e.target.value)}
-          sx={{ mt: 1 }}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setOpen(false)}>Cancel</Button>
-        <Button
-          variant="contained"
-          onClick={handleSubmit}
-          disabled={!returnDueDate || !item}
-        >
-          Confirm
-        </Button>
-      </DialogActions>
-    </Dialog>
-  </>
-)}
-
+          <Dialog open={open} onClose={() => setOpen(false)}>
+            <DialogTitle>Request to Borrow</DialogTitle>
+            <DialogContent>
+              <TextField
+                label="Return Due Date"
+                type="date"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                value={returnDueDate}
+                onChange={(e) => setReturnDueDate(e.target.value)}
+                sx={{ mt: 1 }}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setOpen(false)}>Cancel</Button>
+              <Button
+                variant="contained"
+                onClick={handleSubmit}
+                disabled={!returnDueDate || !item}
+              >
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      )}
     </Box>
   );
 };

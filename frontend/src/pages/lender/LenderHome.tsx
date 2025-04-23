@@ -46,7 +46,7 @@ const LenderHome: React.FC = () => {
 
     const fetchRequests = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/lender/requests/8`);
+        const res = await fetch(`http://localhost:3000/lender/requests/${user.id}`);
         if (!res.ok) throw new Error('Failed to fetch lender requests');
         const data = await res.json();
         setRequests(Array.isArray(data) ? data : []); // Safely handle unexpected data
