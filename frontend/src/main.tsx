@@ -8,6 +8,7 @@ import App from './App'
 import { theme } from './theme/theme'
 import { store } from './app/store'
 import './index.css'
+import BootstrapAuth from './features/auth/bootStrapAuth'
 
 const queryClient = new QueryClient()
 
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
+        <BootstrapAuth />      {/* 👈 keep user after refresh */}
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>
             <CssBaseline />

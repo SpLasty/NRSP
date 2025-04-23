@@ -1,5 +1,3 @@
-// pages/lender/ListItemsPage.tsx
-import React from 'react';
 import { Box, Typography, Alert } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { ItemForm } from '../../components/ItemForm';

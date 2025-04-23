@@ -1,32 +1,24 @@
 import React from 'react';
 import { AppBar, Toolbar, Button } from '@mui/material';
-import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../features/auth/authSlice';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const Header: React.FC = () => {
-  const { logout } = useAuth();
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  
   const handleLogout = () => {
-    // Clear cookies (client-side only)
-    document.cookie.split(';').forEach(cookie => {
-      const eqPos = cookie.indexOf('=');
-      const name = eqPos > -1 ? cookie.slice(0, eqPos) : cookie;
-      document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
-    });
-
-    // Clear localStorage & sessionStorage
-    localStorage.clear();
-    sessionStorage.clear();
-
-    // Call your app's logout logic
-    logout();
-
-    // Optional: Reload page or redirect to login
-    window.location.href = '/login';
+    dispatch(logout());
+    queryClient.clear(); 
+    navigate('/login');
   };
-
+  
   return (
     <AppBar position="static" color="default" elevation={1} sx={{ ml: 28 }}>
-      <Toolbar sx={{ justifyContent: 'flex' }}>
+      <Toolbar sx={{ justifyContent: 'flex-end' }}>
         <Button variant="contained" color="primary" onClick={handleLogout} size="small">
           Logout
         </Button>

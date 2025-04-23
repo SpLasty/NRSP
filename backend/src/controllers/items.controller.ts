@@ -26,23 +26,22 @@ export class ItemsController {
     return this.items.findById(id);
   }
 
-  @Get('/users/me/items') 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('lender')
-  getMyItems(@CurrentUser() user: { sub: number }) {
-    return this.items.findByLender(user.sub);
-  }
-
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('lender')
   async create(
     @Body() dto: CreateItemDto,
-    @CurrentUser() user: { sub: number },
+    @CurrentUser() user: { id: number },     
   ) {
-    console.log('🔍 Lender ID (user.sub):', user.sub);
-    const lender = await this.usersService.findById(8);
+    const lender = await this.usersService.findById(user.id);  
     return this.items.create({ ...dto, lender });
+  }
+  
+  @Get('/users/me/items')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('lender')
+  getMyItems(@CurrentUser() user: { id: number }) {
+    return this.items.findByLender(user.id);              
   }
 
   @Put(':id')

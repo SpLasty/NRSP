@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, TextField, Autocomplete, Divider } from '@mui/material';
 import { Link } from 'react-router-dom';
+import api from '../../services/api';
 
 interface Item {
   id: number;
@@ -20,14 +21,13 @@ const SearchItemsPage: React.FC = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const res = await fetch('http://localhost:3000/items');
-        const data = await res.json();
+        
+        const data = await api.get('/items').then(res => res.data);
         setItems(data);
       } catch (err) {
         console.error('Failed to fetch items:', err);
       }
     };
-
     fetchItems();
   }, []);
 
