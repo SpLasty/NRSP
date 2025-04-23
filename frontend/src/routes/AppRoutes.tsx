@@ -12,9 +12,12 @@ import ListItemsPage from '../pages/lender/ListItemsPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import ListingsPage from '../pages/lender/ListingsPage';
 import EditItemPage from '../pages/lender/EditItemPage';
+import DashBoardPage from '../pages/admin/DashBoardPage';
+
 
 const AppRoutes: React.FC = () => (
   <Routes>
+    
     <Route path="/login" element={<LoginPage />} />
     <Route path="/register" element={<RegisterPage />} />
 
@@ -23,6 +26,7 @@ const AppRoutes: React.FC = () => (
       <Route element={<Layout />}>
         {/* Borrower */}
         <Route path="borrower" element={<BorrowerHome />} />
+        <Route path="admin" element={<DashBoardPage />} />
         <Route path="borrower/search" element={<SearchItemsPage />} />
         <Route path="borrower/item/:id" element={<ItemDetailPage />} />
         {/* Lender */}

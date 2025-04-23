@@ -10,8 +10,6 @@ import { selectAuth } from '../../features/auth/authSlice';
 
 
 
-
-
 interface Item {
   id: number;
   title: string;

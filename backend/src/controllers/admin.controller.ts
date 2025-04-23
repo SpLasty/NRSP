@@ -44,4 +44,10 @@ export class AdminController {
   deleteItem(@Param('id') id: string) {
     return this.adminService.deleteItem(+id);
   }
+
+  @Get('listings')
+  getAllListings() {
+  return this.adminService.findAllListings();
+}
+
 }

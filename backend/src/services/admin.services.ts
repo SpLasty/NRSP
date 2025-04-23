@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { User } from '../db/entity/user.entity'
 import { Item } from '../db/entity/item.entity';
 import { BorrowRequest } from '../db/entity/borrow-request.entity';
+import { Not } from 'typeorm';
+
 
 @Injectable()
 export class AdminService {
@@ -14,8 +16,11 @@ export class AdminService {
   ) {}
 
   findAllUsers() {
-    return this.userRepo.find();
+    return this.userRepo.find({
+      where: { role: Not('admin') },
+    });
   }
+  
 
   findAllItems() {
     return this.itemRepo.find({ relations: ['lender'] });
@@ -40,6 +45,14 @@ export class AdminService {
       return this.itemRepo.remove(item);
     }
   }
+  
+  async findAllListings() {
+    return this.itemRepo.find({
+      relations: ['lender', 'borrowRequests', 'borrowRequests.borrower'],
+      order: { createdAt: 'DESC' },
+    });
+  }
+  
 
   deleteUser(id: number) {
     return this.userRepo.delete(id);
