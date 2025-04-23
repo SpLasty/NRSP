@@ -15,15 +15,10 @@ export class AuthService {
     const existing = await this.usersService.findByEmail(dto.email);
     if (existing) throw new ConflictException('Email already in use');
 
-    const hashed = await bcrypt.hash(dto.password, 10);
-    const newUser = await this.usersService.create({
-      ...dto,
-      password: hashed,
-    });
+    const newUser = await this.usersService.create(dto);
 
     return { message: 'Registered successfully', userId: newUser.id };
   }
-
   async validateUser(email: string, password: string) {
     const user = await this.usersService.findByEmail(email);
     if (!user || !(await bcrypt.compare(password, user.password))) {
