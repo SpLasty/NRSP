@@ -1,18 +1,32 @@
 import { createTheme } from '@mui/material/styles';
 
+export const drawerWidth = 240;
+
 export const theme = createTheme({
   palette: {
-    primary: { main: '#005f5b' }, // deep teal (matches mock‑up buttons)
-    secondary: { main: '#8BC34A' },
-    background: { default: '#f5f5f5' },
+    primary: { main: '#00695c' },     // logout button / icons
+    background: { default: '#fafafa' },
   },
   components: {
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          background: 'linear-gradient(#9e9e9e,#e0e0e0)',
-          color: '#000',
-          width: 220,
+          width: drawerWidth,
+          backgroundColor: '#004d40',
+          color: '#ffffff',
+          borderRight: 'none',
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          '&.Mui-selected, &.Mui-selected:hover': {
+            backgroundColor: '#00695c',
+          },
+          '&:hover': {
+            backgroundColor: 'rgba(255,255,255,0.08)',
+          },
         },
       },
     },

@@ -1,4 +1,3 @@
-// lender.controller.ts
 import { Controller, Get, Param, Patch, Body } from '@nestjs/common';
 import { LenderService } from '../services/lender.services';
 
@@ -6,7 +5,7 @@ import { LenderService } from '../services/lender.services';
 export class LenderController {
   constructor(private readonly lenderService: LenderService) {}
 
-  @Get('requests/:id') // <- this is what your frontend is calling
+  @Get('requests/:id') 
   getLenderRequests(@Param('id') id: string) {
     return this.lenderService.getBorrowRequestsForLender(+id);
   }

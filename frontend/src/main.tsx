@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <BootstrapAuth />      {/* 👈 keep user after refresh */}
+        <BootstrapAuth />      {/* This component will check if the user is logged in and set the auth state accordingly */}
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>
             <CssBaseline />

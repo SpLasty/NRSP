@@ -14,6 +14,7 @@ import EditItemPage from '../pages/lender/EditItemPage';
 import DashBoardPage from '../pages/admin/DashboardPage';
 import BorrowerHistoryPage from '../pages/borrower/BorrowHistoryPage';
 import LenderHome from '../pages/lender/LenderHome';
+import ProfilePage from '../pages/profile/ProfilePage'
 
 const AppRoutes: React.FC = () => (
   <Routes>
@@ -36,6 +37,9 @@ const AppRoutes: React.FC = () => (
        <Route path="lender/my-items" element={<ListingsPage />} /> 
        <Route path="items/:id" element={<ItemDetailPage />} />
        <Route path="/lender/edit/:id" element={<EditItemPage />} />
+        {/* Profile */}
+        <Route path="profile" element={<ProfilePage />} />
+
         {/* fallback */}
         <Route path="*" element={<NotFoundPage />} />
       </Route>

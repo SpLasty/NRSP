@@ -22,7 +22,7 @@ interface Item {
 }
 
 const ItemDetailPage: React.FC = () => {
-  const { user } = useSelector(selectAuth);   // ← reactive
+  const { user } = useSelector(selectAuth);   
   const isBorrower = user?.role === 'borrower';
   
   console.log(getUserRoleFromToken())
@@ -35,7 +35,7 @@ const ItemDetailPage: React.FC = () => {
   const borrowerId = getUserIdFromToken();
   const mapRef = useRef<HTMLDivElement>(null);
 
-  const MAP_ID = '2e3d7acc77ffe0b5'; // 🔥 Replace this with your actual Google Cloud Map ID
+  const MAP_ID = '2e3d7acc77ffe0b5'; 
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -68,7 +68,7 @@ const ItemDetailPage: React.FC = () => {
       const map = new Map(mapRef.current, {
         center: item.location,
         zoom: 17,
-        mapId: MAP_ID, // ✅ Use mapId here
+        mapId: MAP_ID, 
         tilt: 45,
         heading: 90,
         mapTypeId: 'roadmap',

@@ -1,4 +1,3 @@
-// src/components/AuthLayout.tsx
 
 import { Box, Paper } from '@mui/material';
 import { ReactNode } from 'react';

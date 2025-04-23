@@ -13,6 +13,7 @@ interface User {
 }
 
 interface BorrowRequest {
+  status: string;
   borrower?: {
     name: string;
   };
@@ -167,7 +168,7 @@ const DashBoardPage: React.FC = () => {
                   <TableCell>{item.title}</TableCell>
                   <TableCell>{item.lender?.name}</TableCell>
                   <TableCell>{latestReq?.borrower?.name || '—'}</TableCell>
-                  <TableCell>{item.status}</TableCell>
+                  <TableCell>{latestReq?.status}</TableCell>
                   <TableCell>{latestReq?.returnDueDate || '—'}</TableCell>
                   <TableCell align="right">
                     <IconButton onClick={() => handleDeleteListing(item.id)} color="error">

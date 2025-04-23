@@ -44,7 +44,7 @@ export const login = async (email: string, password: string) => {
       id: decoded.sub,
       email: decoded.email,
       role: decoded.role,
-      name: decoded.name, // optional if available
+      name: decoded.name, 
     },
   };
 };
