@@ -27,94 +27,45 @@ From the project root:
 ```bash
 docker-compose up -d
 ```
+You can view the database via pgadmin or run cli sql commands.
 
-This will:
-- Launch a PostgreSQL 15 container
-- Load credentials from the internal environment (defined in the `docker-compose.yml`)
-- Expose the database on port the port specified in .env file
 
----
+## Step 2: Setup the Backend (NestJS API)
 
-## Step 2: Initialize the Database
+Change directory into Backend and run npm install. After that this command:  **npm run start**. Drop the env file for backend
 
-Navigate to the `backend/db/` directory and run the initialization script:
-
-```bash
-cd backend/db
-chmod +x init-db.sh
-./init-db.sh
-```
-
-This will:
-- Create the database schema (tables for users, items, borrow requests)
-- Seed the database with sample data
-
-You can verify the tables manually using `psql` or pgAdmin.
-
----
-
-## Step 3: Setup the Backend (NestJS API)
-
-The backend code is located in the `backend/` directory. It connects to the PostgreSQL database using environment variables and TypeORM.
+## Step 3: Setup the Frontend(React+MUI)
+Change Directory into frontend and npm install. Drop the env file in frontend folder and then run this command: **npm run dev**
 
 ### Create a `.env` file in `backend/`:
 
 ```env
-POSTGRES_DB=value
-POSTGRES_USER=value
-POSTGRES_PASSWORD=value
-POSTGRES_PORT=value
-POSTGRES_HOST=value
-JWT_SECRET=value (for later)
-```
 
-Note: This file should **not** be committed. A `.env.example` file should be created for sharing defaults.
+env file has to be placed inside frontend, inside backend and inside root directory.
+Here are the env files:
 
----
-
-### Install Dependencies and Start the Backend
-
-```bash
-cd backend
-npm install
-npm run start:dev
-```
-
-This will:
-- Start the NestJS development server on `http://localhost:3000`
-- Automatically reload on file changes
-- Connect to the PostgreSQL DB and log DB activity
-
-To verify, visit:
-
-```bash
-http://localhost:3000
-```
+root directory .env
+POSTGRES_DB=nrs_platform
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=supersecret
+POSTGRES_PORT=5433
+POSTGRES_HOST=localhost
+JWT_SECRET=jwtauth!!
+VITE_GOOGLE_MAPS_MAP_ID = 2e3d7acc77ffe0b5
 
 
----
+Frontend env:
+VITE_API_URL=http://localhost:3000
 
-## Project Structure
+Backend env:
+POSTGRES_DB=nrs_platform
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=supersecret
+POSTGRES_PORT=5433
+POSTGRES_HOST=localhost
+JWT_SECRET=jwtauth!!
 
-```
-/ (project root)
-├── backend/                # NestJS backend
-│   ├── src/
-│   ├── test/
-│   ├── db/                 # Schema, seed, and init-db.sh scripts
-│   ├── .env                # Local secrets (ignored)
-│   └── README.md
-├── docker-compose.yml      # Spins up PostgreSQL
-└── README.md               # Main project README
-```
 
----
-
-## Environment and Secrets
-
-- Each service (backend, database) manages its own `.env` file.
-- These files are excluded via `.gitignore`.
-- Actual secrets will be submitted in `config.yml` on D2L as required.
 
 ## Authors
 
