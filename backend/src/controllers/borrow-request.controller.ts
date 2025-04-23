@@ -33,8 +33,11 @@ export class BorrowRequestController {
   }
 
   @Get('user/:id')
-  findByBorrower(@Param('id') id: string) {
-    return this.borrowService.findByBorrower(+id);
+  findByBorrower(
+    @Param('id') id: string,
+    @Body('status') status: string = 'all',
+  ) {
+    return this.borrowService.findByBorrowerAndStatus(+id, status as any);
   }
 
 
@@ -47,5 +50,10 @@ export class BorrowRequestController {
   remove(@Param('id') id: string) {
     return this.borrowService.remove(+id);
   }
-  
+
+  @Get('lender/:id')                              
+  findForLender(@Param('id') id: string) {
+    return this.borrowService.findForLender(+id);
+  }
+    
 }

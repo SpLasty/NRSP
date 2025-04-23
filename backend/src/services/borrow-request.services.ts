@@ -74,4 +74,27 @@ export class BorrowRequestService {
   async remove(id: number) {
     return this.borrowRepo.delete(id);
   }
+
+  async findForLender(lenderId: number): Promise<BorrowRequest[]> {
+    return this.borrowRepo.find({
+      relations: ['item', 'item.lender', 'borrower'],
+      where: { item: { lender: { id: lenderId } } },  
+      order: { requestDate: 'DESC' },
+    });
+  }
+  
+
+  async findByBorrowerAndStatus(
+    borrowerId: number,
+    status: 'pending' | 'accepted' | 'declined' | 'returned' | 'all' = 'all',
+  ): Promise<BorrowRequest[]> {
+    return this.borrowRepo.find({
+      relations: ['item'],
+      where: {
+        borrower: { id: borrowerId },
+        ...(status !== 'all' ? { status } : {}),
+      },
+      order: { requestDate: 'DESC' },
+    });
+  }
 }
