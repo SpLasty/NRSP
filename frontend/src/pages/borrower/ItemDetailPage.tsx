@@ -35,7 +35,8 @@ const ItemDetailPage: React.FC = () => {
   const borrowerId = getUserIdFromToken();
   const mapRef = useRef<HTMLDivElement>(null);
 
-  const MAP_ID = '2e3d7acc77ffe0b5'; // 🔥 Replace this with your actual Google Cloud Map ID
+  const MAP_ID = import.meta.env.VITE_GOOGLE_MAPS_MAP_ID!;
+
 
   useEffect(() => {
     const fetchItem = async () => {
