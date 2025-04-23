@@ -6,21 +6,11 @@ import {
 } from '@mui/material';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { getUserIdFromToken, getUserRoleFromToken } from '../../utils/auth';
+import { useSelector } from 'react-redux';
+import { selectAuth } from '../../features/auth/authSlice';
 
 
 
-const role = getUserRoleFromToken(); // ✅ get user role
-
-var isBorrower: boolean | null = null;
-
-
-if (role === 'borrower') {
-  isBorrower = true;
-} else if (role === 'lender') {
-  isBorrower = false;
-}
-console.log(getUserRoleFromToken())
-console.log(isBorrower)
 
 
 interface Item {
@@ -42,6 +32,12 @@ const containerStyle = {
 };
 
 const ItemDetailPage: React.FC = () => {
+  const { user } = useSelector(selectAuth);   // ← reactive
+  const isBorrower = user?.role === 'borrower';
+  
+  console.log(getUserRoleFromToken())
+  console.log(isBorrower)
+
   const { id } = useParams<{ id: string }>();
   const [item, setItem] = useState<Item | null>(null);
   const [open, setOpen] = useState(false);
