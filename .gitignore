@@ -1,3 +1,6 @@
 .env
 *.env
 .qodo
+dumb.sh
+my-app.tar
+/uploads/

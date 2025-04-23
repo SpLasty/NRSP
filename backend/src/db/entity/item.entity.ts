@@ -31,6 +31,12 @@ export class Item {
   @OneToMany(() => BorrowRequest, req => req.item)
   borrowRequests: BorrowRequest[];
 
+  @Column({ type: 'json', nullable: true })
+  location: {
+    lat: number;
+    lng: number;
+  };
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 }
