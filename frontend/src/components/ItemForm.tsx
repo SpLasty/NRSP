@@ -1,7 +1,6 @@
-// components/ItemForm.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
-  Box, TextField, Button, MenuItem, Typography, Stack, Avatar,
+  Box, TextField, Button, MenuItem, Stack, Avatar,
 } from '@mui/material';
 import { ItemPayload, uploadImage } from '../services/itemService';
 
@@ -45,7 +44,7 @@ export const ItemForm: React.FC<FormProps> = ({
     if (file) {
       const res = await uploadImage(file);
       imageUrl = res.url;
-      setForm(prev => ({ ...prev, imageUrl })); // ✅ this updates the preview
+      setForm(prev => ({ ...prev, imageUrl })); 
     }
 
     const payload: ItemPayload = {

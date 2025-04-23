@@ -14,6 +14,10 @@ import { selectAuth } from '../../features/auth/authSlice';
 
 export type Role = 'borrower' | 'lender' | 'admin';
 
+interface SidebarProps {
+  role: "borrower" | "lender" | "admin";
+}
+
 const navByRole: Record<Role, Array<{ label: string; path: string; icon: React.ReactNode }>> = {
   borrower: [
     { label: 'Home', path: '/borrower', icon: <HomeIcon /> },
@@ -37,7 +41,7 @@ const navByRole: Record<Role, Array<{ label: string; path: string; icon: React.R
   ],
 };
 
-export const Sidebar: React.FC = () => {
+export const Sidebar: React.FC<SidebarProps> = () => {
   const { user } = useSelector(selectAuth);
   const role = user?.role as Role; 
   const location = useLocation();

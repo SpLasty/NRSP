@@ -12,7 +12,6 @@ import NotFoundPage from '../pages/NotFoundPage';
 import ListingsPage from '../pages/lender/ListingsPage';
 import EditItemPage from '../pages/lender/EditItemPage';
 import DashBoardPage from '../pages/admin/DashboardPage';
-
 import BorrowerHistoryPage from '../pages/borrower/BorrowHistoryPage';
 import LenderHome from '../pages/lender/LenderHome';
 
