@@ -45,25 +45,25 @@ env file has to be placed inside frontend, inside backend and inside root direct
 Here are the env files:
 
 root directory .env
-POSTGRES_DB=nrs_platform
-POSTGRES_USER=admin
-POSTGRES_PASSWORD=supersecret
-POSTGRES_PORT=5433
-POSTGRES_HOST=localhost
-JWT_SECRET=jwtauth!!
-VITE_GOOGLE_MAPS_MAP_ID = 2e3d7acc77ffe0b5
+POSTGRES_DB=
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_PORT=
+POSTGRES_HOST=
+JWT_SECRET=
+VITE_GOOGLE_MAPS_MAP_ID =
 
 
 Frontend env:
 VITE_API_URL=http://localhost:3000
 
 Backend env:
-POSTGRES_DB=nrs_platform
-POSTGRES_USER=admin
-POSTGRES_PASSWORD=supersecret
-POSTGRES_PORT=5433
-POSTGRES_HOST=localhost
-JWT_SECRET=jwtauth!!
+POSTGRES_DB=
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_PORT=
+POSTGRES_HOST=
+JWT_SECRET=
 
 
 
