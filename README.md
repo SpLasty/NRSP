@@ -66,12 +66,3 @@ POSTGRES_HOST=
 JWT_SECRET=
 
 
-
-## Authors
-
-Wasif Ud Dowlah  
-Faiz Marsad  
-Shahriar Bin Zaman  
-
-SENG 513 - Group 5 - Winter 2025
-EOF
